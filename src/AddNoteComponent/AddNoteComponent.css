@@ -1,0 +1,16 @@
+.component {
+    float: right;
+   
+}
+.component label {
+    margin: 0 10px;
+}
+
+.component input {
+    width: 50%;
+    margin: 0 10px;
+}
+
+.component button {
+    margin: 0 10px;
+}

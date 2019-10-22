@@ -5,7 +5,7 @@ import './App.css';
 
 function App() {
   return (
-    <div style=''>
+    <div>
       <h1>Note board</h1>
       <AddNoteComponent/>
       <NoteListComponent/>      
