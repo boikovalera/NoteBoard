@@ -8,6 +8,10 @@ export class NoteComponent extends Component {
         descr: ""
     }
 
+    onChange = () => {
+
+    }
+
     render() {
         return (
             <div className='note'>
@@ -15,10 +19,9 @@ export class NoteComponent extends Component {
                     <input 
                         type="text"                         
                         name="note"
-                        placeholder="Заголовок"
+                        placeholder="Title"
                         value={this.state.note}
-                        onChange={this.onChange}/>
-                    
+                        onChange={this.onChange}/>                    
                     <button type="button">
                         <span>&times;</span>
                     </button>                    
@@ -27,7 +30,8 @@ export class NoteComponent extends Component {
                     <textarea
                         type="text"                         
                         name="descr"
-                        placeholder="Описание"
+                        rows="6"
+                        placeholder="Description"
                         value={this.state.descr}
                         onChange={this.onChange}/>                    
                 </div>                
