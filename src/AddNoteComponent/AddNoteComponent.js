@@ -7,7 +7,7 @@ export class AddNoteComponent extends Component {
         super(props)
 
         this.state = {
-            ...props.note 
+            ...props.note
         }
     }
     
@@ -17,7 +17,6 @@ export class AddNoteComponent extends Component {
     }
 
     onChange = (e) => {
-        //console.log(e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -34,7 +33,7 @@ export class AddNoteComponent extends Component {
                     onChange={this.onChange}/>
                 <button onClick={this.onAddNoteSubmit}>Add</button>
             </form>
-        )        
+        )
     }
 }
 
