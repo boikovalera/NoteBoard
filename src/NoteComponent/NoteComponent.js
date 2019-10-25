@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import './NoteComponent.css';
+import PropTypes from 'prop-types'
+import './NoteComponent.css'
 
 export class NoteComponent extends Component {
 
     constructor(props) {
         super(props);
-        
+                
         this.state = {
             ...props.note
         }
@@ -35,7 +36,7 @@ export class NoteComponent extends Component {
             <div className='note'>
                 <div className='note-title'>
                     <input 
-                        type="text"
+                        type="text"                        
                         name="title"
                         placeholder="Title"
                         value={this.state.title}
@@ -60,5 +61,10 @@ export class NoteComponent extends Component {
         )
     }
 }
+
+NoteComponent.defaultProps = {
+    title: 'Note',
+    descr: 'Description'
+};
 
 export default NoteComponent

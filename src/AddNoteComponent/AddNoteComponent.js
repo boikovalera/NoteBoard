@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './AddNoteComponent.css';
 
 export class AddNoteComponent extends Component {
@@ -36,5 +37,9 @@ export class AddNoteComponent extends Component {
         )
     }
 }
+
+AddNoteComponent.defaultProps = {
+    title: 'Note'
+};
 
 export default AddNoteComponent

@@ -7,9 +7,9 @@ class App extends Component {
   
     constructor(props) {
         super(props);
-        var listNote = localStorage.getItem("notes") != null ? JSON.parse(localStorage.getItem("notes")) : [];
+        let listNote = localStorage.getItem("notes");
         this.state = {
-            notes: listNote,
+            notes: listNote != null ? JSON.parse(localStorage.getItem("notes")) : [],
             note: {
                 title: ""
             }
@@ -18,11 +18,11 @@ class App extends Component {
 
     onAddNote = (note) => {
         note.id = Date.now();
-        let addNotes = [...this.state.notes, note]
+        let modifyNotesAfterAddNote = [...this.state.notes, note]
         this.setState({
-            notes: addNotes
+            notes: modifyNotesAfterAddNote
         })
-        localStorage.setItem("notes", JSON.stringify(addNotes));
+        localStorage.setItem("notes", JSON.stringify(modifyNotesAfterAddNote));
     }
     
     onDeleteNote = (note) => {
@@ -34,9 +34,13 @@ class App extends Component {
     }
 
     onEditNote = (note) => {
-        let afterEditNotes = this.state.notes.map(el => 
-            el.id === note.id ? 
-                (el.title === note.title && el.descr === note.descr ? el: note) : el)
+        let afterEditNotes = this.state.notes.map(el => {
+            if(el.id === note.id && (el.title !== note.title || el.descr !== note.descr)) {
+                return note
+            } else {
+                return el
+            }
+        });            
         this.setState({
             notes: afterEditNotes
         })
