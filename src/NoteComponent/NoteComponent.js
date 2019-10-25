@@ -53,7 +53,7 @@ export class NoteComponent extends Component {
                         value={this.state.descr}
                         onChange={this.onChange}/>
                     <button type="button" onClick={this.onEditAction}>
-                        <span>Edit</span>
+                        <span>Save</span>
                     </button>
                 </div>
             </div>
