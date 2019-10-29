@@ -1,47 +1,71 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import propTypes from 'prop-types'
 import './NoteComponent.css'
 
 export class NoteComponent extends Component {
 
-    constructor(props) {
-        super(props);
-                
-        this.state = {
-            ...props.note
+    onChange = (e) => {
+        this.props.onChange(this.props.note.id,
+            {
+                [e.target.name]: e.target.value
+            }
+        );
+    }
+
+    getNoteStyle() {
+        const { x, y } = this.props.note;
+        console.log(x + " : " + y)
+        let aaa =  {
+            ...noteStyle,
+            top: y,
+            left: x
+        }
+        console.log(aaa) 
+        return aaa
+    }
+
+    startDrag = (e) => {
+        console.log("startDrag");
+        this.prevPosition = {
+            x: e.clientX,
+            y: e.clientY
+        }
+        document.addEventListener("mousemove", this.drag);
+        document.addEventListener("mouseup", this.stopDrag)
+    }
+
+    stopDrag = (e) => {        
+        document.removeEventListener("mousemove", this.drag);
+        document.removeEventListener("mouseup", this.stopDrag)
+    }
+    
+    drag = (e) => {        
+        const { x, y } = this.props.note;        
+        this.props.onChange(this.props.note.id, {
+            x: x + (e.clientX - this.prevPosition.x),
+            y: y + (e.clientY - this.prevPosition.y)
+        });
+        this.prevPosition = {
+            x: e.clientX, 
+            y: e.clientY
         }
     }
-    
-    /*componentDidUpdate() {
-        document.getElementsByTagName('textarea').addEventListener('focusout', this.onEditAction);
-    }*/
 
-    onChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
-
-    onEditAction = (e) => {
-        e.preventDefault();
-        this.props.onEdit(this.state);
-    }
-
-    onDeleteAction = () => {
-        this.props.onDelete(this.props.note);
-    }
-    
     render() {
         return (
-            <div className='note'>
+            <div style={{position: 'absolute', top: this.props.note.y, left: this.props.note.x, border: '1px solid grey'}}>            
                 <div className='note-title'>
-                    <input 
-                        type="text"                        
+                    <span
+                        style={moveBtnStyle}
+                        onMouseDown={this.startDrag}
+                    >o</span>
+                    <input
+                        type="text"
                         name="title"
                         placeholder="Title"
-                        value={this.state.title}
-                        onChange={this.onChange}/>
-                    <button type="button" onClick={this.onDeleteAction}>
+                        value={this.props.note.title}
+                        onChange={this.onChange} />
+                    <button type="button" onClick={this.props.onDelete.bind(null, this.props.note)}>
                         <span>&times;</span>
                     </button>
                 </div>
@@ -51,20 +75,36 @@ export class NoteComponent extends Component {
                         name="descr"
                         rows="6"
                         placeholder="Description"
-                        value={this.state.descr}
-                        onChange={this.onChange}/>
-                    <button type="button" onClick={this.onEditAction}>
-                        <span>Save</span>
-                    </button>
+                        value={this.props.note.descr}
+                        onChange={this.onChange} />
                 </div>
             </div>
         )
     }
 }
 
-NoteComponent.defaultProps = {
-    title: 'Note',
-    descr: 'Description'
+const noteStyle = {
+    position: 'absolute',
+    border: '1px solid black'
+}
+
+const deleteBtnStyle = {
+    cursor: 'pointer',
+    float: 'right',
+    fontWeight: 'bold',
+    backgroundColor: 'grey'
+}
+
+const moveBtnStyle = {
+    ...deleteBtnStyle,
+    float: 'left',
+    cursor: 'move'
+}
+
+NoteComponent.propTypes = {
+    note: propTypes.object.isRequired,
+    onDelete: propTypes.func.isRequired,
+    onChange: propTypes.func.isRequired
 };
 
 export default NoteComponent

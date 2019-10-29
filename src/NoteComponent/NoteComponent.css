@@ -3,9 +3,23 @@
    margin: 5px   
 }
 
-.note-title {
-    width: 100%;
-    display: inline;
+.note-title {    
+    display: inline-flex;
+}
+
+.note-title > span {
+    width: 20px;    
+    margin: auto;
+    padding: 2%;
+}
+
+.note-title > input {
+    width: 85%;  
+    padding: 0 5px;  
+}
+
+.note-title > button {
+    width: 10%;
 }
 
 .note-descr {
@@ -14,16 +28,7 @@
     text-align: center;
 }
 
-.note-title input {
-    width: 85%;    
-}
-
-.note-title button {
-    width: 15%;
-}
-
 .note-descr textarea {    
-    width: 100%;
-        
+    width: 100%;        
     resize: none;    
 }

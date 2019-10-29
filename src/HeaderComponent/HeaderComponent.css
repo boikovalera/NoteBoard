@@ -1,0 +1,16 @@
+
+.header {
+    width: 100%;
+    background-color: grey;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.title {
+    text-align: center;
+}
+
+.btn-add {    
+    text-align: center;
+    margin: auto 0;
+}

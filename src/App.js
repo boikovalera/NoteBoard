@@ -1,75 +1,79 @@
-import React, {Component} from 'react';
-import AddNoteComponent from './AddNoteComponent/AddNoteComponent'
-import NoteComponent from './NoteComponent/NoteComponent'
+import React, { Component } from 'react';
+import HeaderComponent from './HeaderComponent/HeaderComponent';
+import NoteListComponent from './NoteListComponent/NoteListComponent'
 import './App.css';
 
 class App extends Component {
-  
-    constructor(props) {
-        super(props);
-        let listNote = localStorage.getItem("notes");
-        this.state = {
-            notes: listNote != null ? JSON.parse(localStorage.getItem("notes")) : [],
-            note: {
-                title: ""
-            }
-        }
+
+    state = {
+        notes: []
     }
 
-    onAddNote = (note) => {
-        note.id = Date.now();
-        let modifyNotesAfterAddNote = [...this.state.notes, note]
+    componentDidMount() {
         this.setState({
-            notes: modifyNotesAfterAddNote
+            notes: this.restoryState()
         })
-        localStorage.setItem("notes", JSON.stringify(modifyNotesAfterAddNote));
     }
-    
+
+    restoryState() {
+        const listNote = localStorage.getItem("notes");
+        return listNote ? JSON.parse(listNote) : [];
+    }
+
+    saveNotes(data) {
+        localStorage.setItem("notes", JSON.stringify(data));
+    }
+
+    onAddNote = () => {        
+        const notes = [...this.state.notes,
+            {
+                id: Date.now(),
+                title: '',
+                descr: '',
+                x: 50,
+                y: 100
+            }
+        ]
+        console.log('note', notes)
+        this.setState({notes});
+        this.saveNotes(notes);
+    }
+
     onDeleteNote = (note) => {
-        let afterDelNotes = this.state.notes.filter((el) => el !== note)
-        this.setState({
-            notes: afterDelNotes
-        })
-        localStorage.setItem("notes", JSON.stringify(afterDelNotes));
+        const notes = this.state.notes.filter((el) => el !== note);
+        this.setState({notes});
+        this.saveNotes(notes);
     }
 
-    onEditNote = (note) => {
-        let afterEditNotes = this.state.notes.map(el => {
-            if(el.id === note.id && (el.title !== note.title || el.descr !== note.descr)) {
-                return note
-            } else {
-                return el
-            }
-        });            
-        this.setState({
-            notes: afterEditNotes
-        })
-        localStorage.setItem("notes", JSON.stringify(afterEditNotes));
+    onChange = (id, updateData) => {        
+        
+        let note = this.state.notes.find(el => el.id === id)
+
+        note = {
+            ...note,
+            ...updateData
+        }
+
+        const notes = this.state.notes.map(el => el.id === note.id ? note : el)
+        
+        this.setState({notes});
+        this.saveNotes(notes);
     }
 
     render() {
         return (
-            <div className="container-fluid">
-                <div className="row justify-content-center">
-                    <h1>Note board</h1>
-                </div>
-                <div className="row justify-content-center">
-                    <AddNoteComponent
-                        note={this.state.note}
+            <div className="container-fluid">                
+                <div className="row list-note">
+                    <HeaderComponent
                         onAddNote={this.onAddNote}
                     />
                 </div>
                 <div className="row list-note">
-                   {
-                        this.state.notes.map((note) =>
-                            <NoteComponent
-                                key={note.id}
-                                note={note}
-                                onDelete={this.onDeleteNote}
-                                onEdit={this.onEditNote}
-                            />
-                        )
-                    }
+                    <NoteListComponent
+                        notes={this.state.notes}
+                        onDelete={this.onDeleteNote}
+                        onChange={this.onChange}
+                    />
                 </div>
             </div>
         )
